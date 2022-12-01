@@ -36,7 +36,7 @@ func (c *EventConsumer) HandleEvents(
 	ctx context.Context,
 	wg *sync.WaitGroup,
 	cancel func()) {
-	log.Println("Start handling status events")
+	log.Println("Start handling events")
 	defer wg.Done()
 	for {
 		select {
@@ -62,13 +62,13 @@ func (c *EventConsumer) BatchEvents(ctx context.Context, wg *sync.WaitGroup, can
 	ticker := time.NewTicker(time.Duration(c.config.TickerIntervalSeconds) * time.Second)
 	defer ticker.Stop()
 
-	log.Println("Start reading status events")
+	log.Println("Start batching events")
 	defer wg.Done()
 	defer close(c.batchChannel)
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("An error occurred. Exiting events reader")
+			log.Println("An error occurred. Exiting events batcher")
 			return
 		case <-ticker.C: // in case the producer is slow
 			log.Printf("Ticker trigerred at %v", time.Now().UTC().Format(time.RFC3339))

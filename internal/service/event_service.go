@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/kafka-reader/internal/domain"
 	"github.com/segmentio/kafka-go"
+	"log"
 	"time"
 )
 
@@ -43,6 +44,7 @@ func (s *EventService) GetEvent() *domain.EventHolder {
 
 func (s *EventService) Process(event *domain.Event) error {
 	// do some event processing
+	log.Printf("Processing event: %+v", event)
 	time.Sleep(200 * time.Microsecond)
 
 	return nil

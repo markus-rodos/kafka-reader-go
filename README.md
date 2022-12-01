@@ -2,7 +2,7 @@
 
 ### Setup
 To set up golang dependencies: 
-`go mod download`
+`go mod tidy`
 
 ### Local run
 To run the application locally, one needs to do the following:

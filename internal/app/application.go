@@ -44,16 +44,16 @@ func (app *App) StartApp() {
 		go eventsConsumer.HandleEvents(ctx, &wg, cancel)
 	}
 
-	// reader
+	// batcher
 	wg.Add(1)
 	go eventsConsumer.BatchEvents(ctx, &wg, cancel)
 
-	// producer
-	eventsProducer := NewEventProducer(app.eventService, eventChannel)
-	go eventsProducer.ProduceEvents()
+	// reader
+	eventsReader := NewEventReader(app.eventService, eventChannel)
+	go eventsReader.ReadEvents()
 
 	wg.Wait()
-	eventsProducer.Shutdown()
+	eventsReader.Shutdown()
 
 	log.Println("Application stopping ...")
 }

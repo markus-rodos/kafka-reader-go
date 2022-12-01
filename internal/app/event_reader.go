@@ -8,23 +8,23 @@ import (
 	"time"
 )
 
-type EventProducer struct {
+type EventReader struct {
 	keepRunning  bool
 	eventChannel chan *domain.EventHolder
 	eventService *service.EventService
 }
 
-func NewEventProducer(
+func NewEventReader(
 	eventService *service.EventService,
-	eventChannel chan *domain.EventHolder) *EventProducer {
-	return &EventProducer{
+	eventChannel chan *domain.EventHolder) *EventReader {
+	return &EventReader{
 		eventService: eventService,
 		eventChannel: eventChannel,
 		keepRunning:  true}
 }
 
-func (p *EventProducer) ProduceEvents() {
-	log.Println("Start producing status events")
+func (p *EventReader) ReadEvents() {
+	log.Println("Start reading events")
 	var count int64
 	var start = time.Now()
 
@@ -36,9 +36,9 @@ func (p *EventProducer) ProduceEvents() {
 			log.Printf("Produced %d events at speed %.2f/s", cur, float64(cur)/time.Since(start).Seconds())
 		}
 	}
-	log.Println("Exiting status events producer")
+	log.Println("Exiting events reader")
 }
 
-func (p *EventProducer) Shutdown() {
+func (p *EventReader) Shutdown() {
 	p.keepRunning = false
 }
